@@ -249,12 +249,56 @@ int main(){
 					cout<<"Verified!\n";
 				else
 					cout<<"Failed...\n";
-				}
+				
 				
 				t2 = clock();
 					cout<<"verification time: "<<(double)(t2-t1)/CLOCKS_PER_SEC<<"s\n";
-			
+
+				vector<int> summation = new vector<int>;
+				double time_sum = 0;
+				for(int i = 0;i < 10; i ++){
+					cout << "------------ split start (" << i <<") -----------\n";
+					string partialQuery = "SELECT  column0 FROM (" + subQuery(i * 100, (i + 1) * 100)  +") as t WHERE column" +to_string(col)+" BETWEEN "+to_string(start)+" AND "+to_string(end);
+					cout << partialQuery << endl;
+					vector<int> result;
+					vector<snode> bi_digest;
+					vector<Ec1> bi_proof;
+					
+					t1 = clock();
+					
+					single_d_query(partialQuery, start, end, col, result, bi_digest, bi_proof,g1);
+					
+					t2 = clock();
+						cout<<"prover time: "<<(double)(t2-t1)/CLOCKS_PER_SEC<<"s\n";
+					
+					if(result.size() == 0)
+						cout<<"empty";
+					
+					for(int i=0;i<result.size();i++)
+						cout<<result[i]<<" ";
+					cout<<endl;
+					
+					
+					t1 = clock();
+					
+					if(single_d_verify(bi_digest,bi_proof,result,g1,g2))
+						cout<<"Verified!\n";
+					else
+						cout<<"Failed...\n";
+					
+					
+					t2 = clock();
+						cout<<"verification time: "<<(double)(t2-t1)/CLOCKS_PER_SEC<<"s\n";
+					time_sum += (double)(t2-t1)/CLOCKS_PER_SEC;
+					summation.insert(summation.end(),result.begin(),result.end());
+				}
+				cout << "integrated summation = " << endl;
+				for(int i=0;i<summation.size();i++)
+					cout<<summation[i]<<" ";
+				cout<<endl;
+				cout << "integrated time = " << time_sum <<endl;
 				break;
+				}
 			}
 			/*
 			ss[0][0].display();
