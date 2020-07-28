@@ -33,6 +33,10 @@ void update_client(vector<int> update_row, Ec1 g1, Ec2 g2);
 std::vector<std::vector<skiplist> > ss(1);
 std::vector<std::vector<std::vector<skiplist> > > ss_sum(1);
 
+
+string subQuery(int begin, int end){
+	return "select * from Table1 limit " + to_string(begin) + "," + to_string(end);
+}
 int main(){
 
 	clock_t t1,t2;
@@ -208,6 +212,7 @@ int main(){
 			
 			
 				{
+				cout << "dimenstion: " <<tables[0].size() << "\n"; 
 				int col = rand()%(tables[0].size());
 				
 				int start = 0,end = 0;
@@ -368,7 +373,6 @@ int main(){
 					start = tables[0][col][rand()%tables[0][col].size()];
 					end = tables[0][col][rand()%tables[0][col].size()];
 				}
-				
 				string query = "SELECT SUM(column"+to_string(col2)+") FROM Table1 WHERE column" +to_string(col)+" BETWEEN "+to_string(start)+" AND "+to_string(end);
 				cout<<query<<endl;
 				
@@ -398,8 +402,44 @@ int main(){
 				
 				t2 = clock();
 					cout<<"verification time: "<<(double)(t2-t1)/CLOCKS_PER_SEC<<"s\n";
-			
-			
+
+				int summation = 0;
+				double time_sum = 0;
+				for(int i = 0;i < 10; i ++){
+					cout << "------------ split start (" << i <<") -----------\n";
+					string partialQuery = "SELECT SUM(column"+to_string(col2)+") FROM (" + subQuery(i * 100, (i + 1) * 100)  +") as t WHERE column" +to_string(col)+" BETWEEN "+to_string(start)+" AND "+to_string(end);
+					cout << partialQuery << endl;
+					int result;
+					vector<snode> bi_digest;
+					vector<Ec1> bi_proof;
+					Ec1 c0_proof,c1_proof;
+					ZZ_p c0,c1;
+					
+					t1 = clock();
+					
+					sum_single_d_query(partialQuery, start, end, col,col2, result, bi_digest, bi_proof,c0,c1,c0_proof,c1_proof,g1);
+					
+					t2 = clock();
+						cout<<"prover time: "<<(double)(t2-t1)/CLOCKS_PER_SEC<<"s\n";
+					time_sum += (double)(t2-t1)/CLOCKS_PER_SEC;
+					cout<<"sum is :"<<result<<endl;
+					
+					
+					t1 = clock();
+					
+					if(sum_single_d_verify(bi_digest,bi_proof,result, c0,c1,c0_proof,c1_proof, g1,g2))
+						cout<<"Verified!\n";
+					else
+						cout<<"Failed...\n";
+					
+					
+					t2 = clock();
+						cout<<"verification time: "<<(double)(t2-t1)/CLOCKS_PER_SEC<<"s\n";
+					summation += result;
+				}
+				cout << "integrated sum = " << sum <<endl;
+				cout << "integrated time = " << time_sum <<endl;
+
 				break;
 				}
 			
