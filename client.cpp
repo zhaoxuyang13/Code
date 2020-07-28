@@ -46,8 +46,8 @@ void splitInterval(int begin, int end,int n, vector<int> &starts, vector<int> &e
 		ends.push_back(begin + interval);
 		begin += interval + 1;
 	}
-	starts.push_back(begin)
-	ends.push_back(end)
+	starts.push_back(begin);
+	ends.push_back(end);
 }
 int main(){
 
