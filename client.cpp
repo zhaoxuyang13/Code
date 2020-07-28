@@ -437,7 +437,7 @@ int main(){
 						cout<<"verification time: "<<(double)(t2-t1)/CLOCKS_PER_SEC<<"s\n";
 					summation += result;
 				}
-				cout << "integrated sum = " << sum <<endl;
+				cout << "integrated sum = " << summation <<endl;
 				cout << "integrated time = " << time_sum <<endl;
 
 				break;
