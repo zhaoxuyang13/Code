@@ -264,7 +264,7 @@ int main(){
 				
 				t2 = clock();
 					cout<<"verification time: "<<(double)(t2-t1)/CLOCKS_PER_SEC<<"s\n";
-
+				int originalResult = result.size()
 				vector<int> summation;
 				double time_sum = 0;
 				vector<int> starts;
@@ -313,6 +313,11 @@ int main(){
 				for(int i=0;i<summation.size();i++)
 					cout<<summation[i]<<" ";
 				cout<<endl;
+				if(summation.size == orignalResult){
+					cout<<". match"<<endl;
+				}else {
+					cout<<". error !"<<endl;
+				}
 				cout << "integrated time = " << time_sum <<endl;
 				break;
 				}
@@ -463,7 +468,7 @@ int main(){
 				
 				t2 = clock();
 					cout<<"verification time: "<<(double)(t2-t1)/CLOCKS_PER_SEC<<"s\n";
-
+				int orignalResult = result;
 				int summation;
 				double time_sum = 0;
 				vector<int> starts;
@@ -504,9 +509,14 @@ int main(){
 						cout<<"verification time: "<<(double)(t2-t1)/CLOCKS_PER_SEC<<"s\n";
 					summation += result;
 				}
-				cout << "integrated sum = " << summation <<endl;
+				cout << "integrated sum = " << summation;
+				if(summation == orignalResult){
+					cout<<". match"<<endl;
+				}else {
+					cout<<". error !"<<endl;
+				}
 				cout << "integrated time = " << time_sum <<endl;
-
+				
 				break;
 				}
 			
