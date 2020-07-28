@@ -38,12 +38,12 @@ string subQuery(int offset , int rows){
 	return "select * from Table1 limit " + to_string(offset) + "," + to_string(rows);
 }
 void splitInterval(int begin, int end,int n, vector<int> &starts, vector<int> &ends){
-	starts.clear()
-	ends.clear()
+	starts.clear();
+	ends.clear();
 	int interval = (end - begin)/n;
 	for (int i = 0; i < n - 1; i ++){
 		starts.push_back(begin);
-		ends.push_back(begin + interval)
+		ends.push_back(begin + interval);
 		begin += interval + 1;
 	}
 	starts.push_back(begin)
