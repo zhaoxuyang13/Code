@@ -469,7 +469,7 @@ int main(){
 				t2 = clock();
 					cout<<"verification time: "<<(double)(t2-t1)/CLOCKS_PER_SEC<<"s\n";
 				int orignalResult = result;
-				int summation;
+				int summation = 0;
 				double time_sum = 0;
 				vector<int> starts;
 				vector<int> ends;
