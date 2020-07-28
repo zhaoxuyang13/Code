@@ -34,8 +34,8 @@ std::vector<std::vector<skiplist> > ss(1);
 std::vector<std::vector<std::vector<skiplist> > > ss_sum(1);
 
 
-string subQuery(int begin, int end){
-	return "select * from Table1 limit " + to_string(begin) + "," + to_string(end);
+string subQuery(int offset , int rows){
+	return "select * from Table1 limit " + to_string(offset) + "," + to_string(rows);
 }
 int main(){
 
@@ -234,7 +234,6 @@ int main(){
 				
 				t2 = clock();
 					cout<<"prover time: "<<(double)(t2-t1)/CLOCKS_PER_SEC<<"s\n";
-				
 				if(result.size() == 0)
 					cout<<"empty";
 				
@@ -254,11 +253,11 @@ int main(){
 				t2 = clock();
 					cout<<"verification time: "<<(double)(t2-t1)/CLOCKS_PER_SEC<<"s\n";
 
-				vector<int> summation = new vector<int>;
+				vector<int> summation;
 				double time_sum = 0;
 				for(int i = 0;i < 10; i ++){
 					cout << "------------ split start (" << i <<") -----------\n";
-					string partialQuery = "SELECT  column0 FROM (" + subQuery(i * 100, (i + 1) * 100)  +") as t WHERE column" +to_string(col)+" BETWEEN "+to_string(start)+" AND "+to_string(end);
+					string partialQuery = "SELECT  column0 FROM (" + subQuery(i * 100, 100)  +") as t WHERE column" +to_string(col)+" BETWEEN "+to_string(start)+" AND "+to_string(end);
 					cout << partialQuery << endl;
 					vector<int> result;
 					vector<snode> bi_digest;
@@ -451,7 +450,7 @@ int main(){
 				double time_sum = 0;
 				for(int i = 0;i < 10; i ++){
 					cout << "------------ split start (" << i <<") -----------\n";
-					string partialQuery = "SELECT SUM(column"+to_string(col2)+") FROM (" + subQuery(i * 100, (i + 1) * 100)  +") as t WHERE column" +to_string(col)+" BETWEEN "+to_string(start)+" AND "+to_string(end);
+					string partialQuery = "SELECT SUM(column"+to_string(col2)+") FROM (" + subQuery(i * 100, 100)  +") as t WHERE column" +to_string(col)+" BETWEEN "+to_string(start)+" AND "+to_string(end);
 					cout << partialQuery << endl;
 					int result;
 					vector<snode> bi_digest;
