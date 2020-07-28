@@ -270,7 +270,7 @@ int main(){
 				vector<int> starts;
 				vector<int> ends;
 				int split = 10;
-				splitInterval(begin,end,split,starts,ends);
+				splitInterval(start,end,split,starts,ends);
 				for(int i = 0;i < split; i ++){
 					cout << "------------ split start (" << i <<") -----------\n";
 					start = starts.at(i);
