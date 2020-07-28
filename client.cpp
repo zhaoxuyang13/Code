@@ -313,7 +313,7 @@ int main(){
 				for(int i=0;i<summation.size();i++)
 					cout<<summation[i]<<" ";
 				cout<<endl;
-				if(summation.size == orignalResult){
+				if(summation.size() == orignalResult){
 					cout<<". match"<<endl;
 				}else {
 					cout<<". error !"<<endl;
