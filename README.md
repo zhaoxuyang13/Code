@@ -1,46 +1,78 @@
-IntegriDB: Verifiable SQL for Outsourced Database.
-====================================================
-Authors.
-----------------------------------------------------
-Yupeng Zhang, Jonathan Katz, Charalampos Papamanthou
+### IntegriDB Build
 
-Build instructions.
-----------------------------------------------------
-IntegriDB relies on the following libraries:
-- mysql server as SQL database server.
-- mysql client c++ libraries as SQL API.
-- openssl for encryptions and hashing.
-- ate-paring for bilinear groups. https://github.com/herumi/ate-pairing.
-- xbyak. https://github.com/herumi/xbyak.
-- ntl and gmp for doing number theory.
+---
 
-For example, on a fresh Ubuntu 14.04, install the following packages:
-- ```$ sudo apt-get install build-essential git libgmp3-dev libprocps3-dev libgtest-dev python-markdown libboost-all-dev libssl-dev libmysqlclient-dev mysql-server mysql-client```
-- Download and install xbyak from https://github.com/herumi/xbyak to the same directory as IntegriDB. (Go to xbyak/ and $ sudo make install.)
-- Download ate-pairing from https://github.com/herumi/ate-pairing to the same directory as IntegriDB. (Go to ate-pairing/ and $ make.)
-- Download and install ntl library. http://www.shoup.net/ntl/ and http://www.shoup.net/ntl/doc/tour-unix.html
+**original instructions**https://github.com/integridb/Code
 
-To run the code,
-- The default connection settings for mysql in client.cpp is username: root, password: root, database name: integridb. Change according to your settings. (Remember to create a database in mysql.)
-- Set the header and lib path to include ate-pairing (if ate-pairing/ is located at /home/ubuntu/): 
-```
-    $ CPLUS_INCLUDE_PATH=/home/ubuntu/ate-pairing/include/ 
-    $ export CPLUS_INCLUDE_PATH
-    $ LIBRARY_PATH=/home/ubuntu/ate-pairing/lib/
-    $ export LIBRARY_PATH
-```
-- In interidb/, 
-``` 
-    $ make create
-    $ ./createtables
-```
-    to create test tables. Change createtables.cpp to adjust table size.
-```
-    $ make main 
-    $ ./main
-```
+---
 
-Please adjust the paths in Makefile according to the settings on your machine. The default setting assumes integridb/ and ate-pairing/ are located at /home/ubuntu/
-References:
----------------------------------------------------
-Zhang, Y., Katz, J., & Papamanthou, C. (2015, October). IntegriDB: Verifiable SQL for Outsourced Databases. In Proceedings of the 22nd ACM SIGSAC Conference on Computer and Communications Security (pp. 1480-1491). ACM.
+1. Dependencies, 比Github页面增加了libgmp-dev
+
+   ```shell
+   $ sudo apt-get install build-essential git libgmp3-dev libprocps3-dev libgtest-dev python-markdown libboost-all-dev libssl-dev libmysqlclient-dev mysql-server mysql-client libgmp-dev
+   ```
+
+2. Download and install xbyak
+
+   ```shell
+   $ git clone https://github.com/herumi/xbyak.git
+   $ cd xbyak
+   $ sudo make install
+   ```
+
+3. Download and make ate-pairing 
+
+   ```shell
+   $ git clone https://github.com/herumi/ate-pairing.git
+   $ cd ate-pairing
+   $ make
+   ```
+
+4. Download and install ntl library
+
+   ```shell
+   $ wget https://www.shoup.net/ntl/ntl-11.4.3.tar.gz
+   $ gunzip ntl-11.4.3.tar.gz
+   $ tar xf ntl-11.4.3.tar.gz
+   $ cd ntl-11.4.3/src
+   $ ./configure
+   $ make
+   $ make check
+   /很久
+   $ sudo make install
+   ```
+
+5. 环境变量
+
+   ```shell
+   $ export CPLUS_INCLUDE_PATH=$PWD/ate-pairing/include
+   $ export LIBRARY_PATH=$PWD/ate-pairing/lib
+   ```
+
+6. 修改Makefile
+
+   ```shell
+   $ cp Makefile Makefile.copy
+   
+   $ sed -i 's/\/home\/ubuntu/pwd/g' Makefile  <= pwd改成当前的路径
+   $ vim Makefile
+   检查一下对不对，并修改LDFLAGS为
+   	-lntl -lmysqlclient --std=c++0x -lssl -lcrypto -lpthread -lgmp
+   $ gcc --version
+   	gcc的版本不能太老，我编译成功的时候用的gcc8（原来镜像里面是gcc4.x)
+   	https://askubuntu.com/questions/1028601/install-gcc-8-only-on-ubuntu-18-04
+     
+   ```
+
+7. 设置table大小,修改文件 createtables.cpp.
+
+   ``` shell
+   $ make create
+   $ ./createtables
+   $ make main 
+   $./main
+   ```
+
+   
+
+   
