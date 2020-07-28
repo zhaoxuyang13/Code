@@ -264,7 +264,7 @@ int main(){
 				
 				t2 = clock();
 					cout<<"verification time: "<<(double)(t2-t1)/CLOCKS_PER_SEC<<"s\n";
-				int originalResult = result.size();
+				int orignalResult = result.size();
 				vector<int> summation;
 				double time_sum = 0;
 				vector<int> starts;
