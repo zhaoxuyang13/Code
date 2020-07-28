@@ -37,6 +37,18 @@ std::vector<std::vector<std::vector<skiplist> > > ss_sum(1);
 string subQuery(int offset , int rows){
 	return "select * from Table1 limit " + to_string(offset) + "," + to_string(rows);
 }
+void splitInterval(int begin, int end,int n, vector<int> &starts, vector<int> &ends){
+	starts.clear()
+	ends.clear()
+	int interval = (end - begin)/n;
+	for (int i = 0; i < n - 1; i ++){
+		starts.push_back(begin);
+		ends.push_back(begin + interval)
+		begin += interval + 1;
+	}
+	starts.push_back(begin)
+	ends.push_back(end)
+}
 int main(){
 
 	clock_t t1,t2;
@@ -255,9 +267,15 @@ int main(){
 
 				vector<int> summation;
 				double time_sum = 0;
-				for(int i = 0;i < 10; i ++){
+				vector<int> starts;
+				vector<int> ends;
+				int split = 10;
+				splitInterval(begin,end,split,starts,ends);
+				for(int i = 0;i < split; i ++){
 					cout << "------------ split start (" << i <<") -----------\n";
-					string partialQuery = "SELECT  column0 FROM (" + subQuery(i * 100, 100)  +") as t WHERE column" +to_string(col)+" BETWEEN "+to_string(start)+" AND "+to_string(end);
+					start = starts.at(i);
+					end = ends.at(i);
+					string partialQuery = "SELECT  column0 FROM Table1 WHERE column" +to_string(col)+" BETWEEN "+to_string(start)+" AND "+to_string(end);
 					cout << partialQuery << endl;
 					vector<int> result;
 					vector<snode> bi_digest;

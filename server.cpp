@@ -37,10 +37,6 @@ void single_d_query(string query, int start, int end, int col, vector<int> &resu
 		sets[i] = ss[0][col].range_cover(&bi_digest[i]);
 	}
 	
-	
-
-	
-	
 	vector<int> temp_set = sets[0];
 	for(int i=1;i<sets.size();i++){
 		temp_set.insert(temp_set.end(),sets[i].begin(),sets[i].end());
