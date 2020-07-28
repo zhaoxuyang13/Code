@@ -464,11 +464,17 @@ int main(){
 				t2 = clock();
 					cout<<"verification time: "<<(double)(t2-t1)/CLOCKS_PER_SEC<<"s\n";
 
-				int summation = 0;
+				int summation;
 				double time_sum = 0;
-				for(int i = 0;i < 10; i ++){
+				vector<int> starts;
+				vector<int> ends;
+				int split = 10;
+				splitInterval(start,end,split,starts,ends);
+				for(int i = 0;i < split; i ++){
 					cout << "------------ split start (" << i <<") -----------\n";
-					string partialQuery = "SELECT SUM(column"+to_string(col2)+") FROM (" + subQuery(i * 100, 100)  +") as t WHERE column" +to_string(col)+" BETWEEN "+to_string(start)+" AND "+to_string(end);
+					start = starts.at(i);
+					end = ends.at(i);
+					string partialQuery = "SELECT SUM(column"+to_string(col2)+") FROM Table1 as t WHERE column" +to_string(col)+" BETWEEN "+to_string(start)+" AND "+to_string(end);
 					cout << partialQuery << endl;
 					int result;
 					vector<snode> bi_digest;
